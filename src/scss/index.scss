@@ -1,6 +1,14 @@
-html {
-    body {
-        background: red;
-    }
+
+#root {
+	margin-left: 100px !important;
+	padding-top: 0 !important;
 }
 
+.main-wrapper {
+	display: flex;
+	min-height: 100%;
+	.vertical.menu{
+		margin: 0;
+		border-radius: 0;
+	}
+}

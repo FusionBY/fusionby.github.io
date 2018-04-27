@@ -1,9 +1,11 @@
 node_modules/
 dist/
+semantic/
 npm-debug.log.*
 .DS_Store
 .DS_Store?
 ._*
 .Trashes
+.vscode/
 
 
