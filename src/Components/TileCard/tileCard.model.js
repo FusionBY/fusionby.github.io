@@ -1,4 +1,4 @@
-class Model  {
+export default class TileCardModel {
 	constructor (items = []) {
 		this.items = items;
 	}
@@ -8,5 +8,3 @@ class Model  {
 		return item;
 	}
 }
-
-export default Model;

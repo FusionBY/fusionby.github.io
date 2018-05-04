@@ -1,18 +1,22 @@
 import './scss/index.scss';
 import '../semantic/semantic.min.css';
-
 import '../semantic/semantic.min.js';
 
-import Model from './model/Model';
-import View from './view/View';
-import Controller from './controller/Controller';
+import PubSub from './helpers/PubSub';
 
-// const model = new Model();
-// const view = new View();
-// const controller = new Controller(model, view);
+import ModalComponent from './Components/ModalForm';
+import TileCardComponent from './Components/TileCard';
 
-(function () {
-	const model = new Model();
-	const view = new View(controller);
-	const controller = new Controller(model, view);
-})();
+class App {
+	constructor () {
+		this.init();
+	}
+
+	init () {
+		const mediator = new PubSub();
+		const tileCardComponent = new TileCardComponent(mediator);
+		const modalComponenr = new ModalComponent(mediator);
+	}
+}
+
+const app = new App();

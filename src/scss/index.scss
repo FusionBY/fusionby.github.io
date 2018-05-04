@@ -12,3 +12,26 @@
 		border-radius: 0;
 	}
 }
+
+.editable-area {
+	&:hover {
+		cursor: pointer;
+		color: #6b5858 !important;
+		i.icon {
+			cursor: pointer;
+			color: #6b5858 !important;
+		}
+	}
+}
+
+[data-title] {
+	.active > & {
+		display: none !important;
+	}
+}
+
+[data-input-block] {
+	:not(.active) > & {
+		display: none !important;
+	}
+}

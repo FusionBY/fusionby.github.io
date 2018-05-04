@@ -1,14 +1,14 @@
-export default class EventEmitter {
+export default class PubSub {
 	constructor () {
 		this.events = {};
 	}
 
-	on (type, callback) {
+	sub (type, callback) {
 		this.events[type] = this.events[type] || [];
 		this.events[type].push(callback);
 	}
 
-	emit (type, arg) {
+	pub (type, arg) {
 		if (this.events[type]) {
 			this.events[type].forEach((callback) => callback(arg));
 		}

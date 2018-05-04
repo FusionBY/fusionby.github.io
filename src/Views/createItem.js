@@ -1,4 +1,4 @@
-export default function createItem ({ id, title }) {
+export default function createItem ({ id, created, title }) {
 	return $.parseHTML(`
 	<div id="${id}" class="card">
 		<div class="content">
@@ -8,10 +8,10 @@ export default function createItem ({ id, title }) {
 				</button>
 			</div>
 			<div class="header">
-				${title}
+				${title} - ${id}
 			</div>
 			<div class="meta">
-				test-${id}
+				${created}
 			</div>
 			<div class="description">
 				Description
