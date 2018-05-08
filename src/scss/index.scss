@@ -24,13 +24,13 @@
 	}
 }
 
-[data-title] {
+.editable-area {
 	.active > & {
 		display: none !important;
 	}
 }
 
-[data-input-block] {
+.input-area {
 	:not(.active) > & {
 		display: none !important;
 	}

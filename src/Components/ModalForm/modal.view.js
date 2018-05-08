@@ -8,18 +8,24 @@ class ModalView {
 		modalForm.modal('toggle');
 	};
 
-	handleAddTileCard = (e) => {
+	handleAddTileCard = (e, value) => {
 		e.preventDefault();
-		this.mediator.pub('add', 'Name-property');
+		this.mediator.pub('add', value);
 	};
 
-	toggleInputField = (e) => {
-		const { title } = e.target.dataset;
-		const { confirm } = e.target.dataset;
+	toggleInputField = (e, setState, { input }) => {
+		const editAvailable = e.target.dataset.atr === 'title' || e.target.dataset.atr === 'title-icon';
+		let confirmAvailable = e.target.dataset.atr === 'confirm';
 
-		if (title) {
-			e.currentTarget.classList.add('active');
-		} else if (confirm) {
+		if (e.which === 13) {
+			confirmAvailable = true;
+		}
+
+		if (editAvailable) {
+			return e.currentTarget.classList.add('active');
+		} else if (confirmAvailable) {
+			const value = input.element.val();
+			setState({ title: value });
 			e.currentTarget.classList.remove('active');
 		}
 	}

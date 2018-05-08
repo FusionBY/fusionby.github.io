@@ -14,9 +14,9 @@ class App {
 
 	init () {
 		const mediator = new PubSub();
-		const tileCardComponent = new TileCardComponent(mediator);
-		const modalComponenr = new ModalComponent(mediator);
+		new TileCardComponent(mediator);
+		new ModalComponent(mediator);
 	}
 }
 
-const app = new App();
+new App();
