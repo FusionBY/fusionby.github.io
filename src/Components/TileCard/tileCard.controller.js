@@ -1,5 +1,3 @@
-import moment from 'moment';
-
 import getItemModel from './tileCardModelBuilder';
 
 export default class TileCardController {
@@ -8,15 +6,19 @@ export default class TileCardController {
 		this.view = view;
 		this.mediator = mediator;
 
-		mediator.sub('add', this.addItem);
+		mediator.sub('lastCities', this.renderLastCities);
 	}
 
-	addItem = (title) => {
+	addItem = (element) => {
 		const id = Date.now();
-		const created = moment().locale('ru').format('DD MMMM YYYY');
-
-		const item = this.model.addItem(new getItemModel(id, created, title));
-
+		const item = this.model.addItem(new getItemModel(id, element.clientTimestamp, element.city, element.user));
 		this.view.addItem(item);
-	}
+	};
+
+	renderLastCities = (cities) => {
+		this.view.emptyCardsList();
+		cities.reverse().forEach((element) => {
+			this.addItem(element);
+		});
+	};
 }

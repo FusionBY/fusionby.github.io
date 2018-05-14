@@ -1,9 +1,6 @@
 export default class ModalModel {
 	constructor () {
-		this.initialState = {
-			title: 'Новый шаблон документа',
-			titleActive: true,
-		};
+		this.initialState = {};
 		this.state = { ...this.initialState };
 	}
 

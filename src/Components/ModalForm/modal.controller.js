@@ -5,42 +5,26 @@ class ModalController {
 		this.mediator = mediator;
 		this.stateObserver = stateObserver;
 
-		this.addTileCard = $('#add-tileCard');
+		this.authenticated = false;
+		mediator.sub('onAuth', () => this.authenticated = true);
+
 		this.addButton = $('#add-button');
+		this.pushCityButton = $('#pushCityButton');
 		this.closeButton = $('#close-modal-button');
-		this.formTitle = $('#form-title');
 		this.modalForm = $('#main-modalForm');
 
-		this.formTitle.on('click', this.toggleInputField);
-		this.formTitle.keypress(this.toggleInputField);
 		this.addButton.on('click', this.toggleForm);
 		this.closeButton.on('click', this.toggleForm);
-		this.addTileCard.on('click', this.handleAddTileCard);
-
-		this.bindings = [
-			{
-				element: $('#main-modalForm [data-atr="title"]'),
-				name: 'title',
-			},
-			{
-				element: $('#main-modalForm [data-atr="input"]'),
-				name: 'input',
-			},
-		];
+		this.pushCityButton.on('click', this.toggleForm);
 
 		this.stateObserver.subscribe((newState) => this.updateDOM(newState, this.bindings));
 
 		this.previousState;
 
-		this.init();
 	}
 
 	get state () {
 		return this.model.state;
-	}
-
-	init () {
-		console.log('init');
 	}
 
 	setState = (newState) => {
@@ -57,18 +41,11 @@ class ModalController {
 	}
 
 	toggleForm = (e) => {
+		if (!this.authenticated) {
+			return;
+		}
 		const { modalForm } = this;
 		this.view.toggleForm(e, modalForm );
-	}
-
-	toggleInputField = (e) => {
-		const input = this.bindings.find((elem) => elem.name === 'input');
-		this.view.toggleInputField(e, (newState) => this.setState(newState), { input: input });
-	}
-
-	handleAddTileCard = (e) => {
-		this.toggleForm(e);
-		this.view.handleAddTileCard(e, this.state.title);
 	}
 }
 

@@ -35,3 +35,61 @@
 		display: none !important;
 	}
 }
+
+.card {
+	&:first-child {
+		border: 2px solid #ff0002 !important;
+	}
+	text-align: center;
+}
+
+//// Super Custom
+.hide {
+	&.pass {
+		display: none;
+	}
+	&#input-segment {
+		display: none;
+	}
+}
+
+.file {
+	.label + input {
+		display: none;
+	}
+}
+
+label {
+	&.pass {
+		display: block;
+		margin: 2px;
+	}
+}
+.file-input {
+	font-size: 1em;
+	border: 1px solid #00b6ad5c;
+	border-radius: 5px;
+	padding: 5px;
+	margin: 5px 0;
+	display: block;
+}
+
+.last-letter {
+	color: red !important;
+    border-radius: 15px;
+    margin: 10px;
+    border: 2px solid red;
+    text-align: center;
+}
+
+.user-id {
+	text-overflow: ellipsis;
+    overflow: hidden;
+}
+.home-icon {
+	margin: 10px 0;
+}
+
+#LAST_CITY {
+	margin: 20px;
+}

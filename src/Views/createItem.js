@@ -1,35 +1,30 @@
-export default function createItem ({ id, created, title }) {
+import moment from 'moment';
+
+export default function createItem ({ id, created, title = 'empty', userId = ''}) {
 	return $.parseHTML(`
 	<div id="${id}" class="card">
 		<div class="content">
-			<div class="right floated">
-				<button class="ui tiny icon button">
-					<i class="edit icon"></i>
-				</button>
+			<div class="header home-icon">
+				<i class="ui home icon"></i>
+			</div>
+			<div class="header last-letter">
+				${title[title.length - 1].toUpperCase()}
 			</div>
 			<div class="header">
-				${title} - ${id}
+				${title}
 			</div>
 			<div class="meta">
-				${created}
+				${moment(created).format('YYYY MMMM DD')}
 			</div>
-			<div class="description">
-				Description
+			<div class="description user-id">
+				${userId}
 			</div>
 		</div>
 		<div class="extra content">
-			<div class="ui two buttons">
-				<div class="ui basic green button">
-					<i class="plus user"></i>
-					Создать отчет
-				</div>
+			<div class="right floated author">
+				<img class="ui avatar tiny image" src="dist/matt.jpg">
 			</div>
 		</div>
-			<div class="extra content">
-				<div class="right floated author">
-					<img class="ui avatar tiny image" src="/matt.jpg">
-				</div>
-			</div>
 	</div>
 	`);
 }
