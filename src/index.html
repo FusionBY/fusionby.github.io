@@ -5,8 +5,9 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Document</title>
+	<title>DApp Cities Games</title>
 	<script src="vendors/jquery-3.3.1.min.js"></script>
+	<script src="vendors/nebPay.js"></script>
 	<script src="vendors/nebulas.js"></script>
 	<script src="vendors/localSave.js"></script>
 	<script src="vendors/i18n.js"></script>
@@ -26,13 +27,23 @@
 				<div class="ui secondary  menu">
 					<div class="right menu">
 						<a class="ui item">
-							<img class="ui avatar image" src="matt.jpg">
-							<span id="user-token">Not authorized</span>
+							<i class="money bill alternate large green icon"></i>
+							<span id="user-token">Web wallet not found!</span>
 						</a>
 					</div>
 				</div>
 				<div class="ui basic segment">
 					<h3 id="testHeader" class="ui header">Cities Game!</h3>
+					<div id="not-extension-message" class="ui warning message">
+						<i class="close icon"></i>
+						<div class="header">
+							You need to install Nebulas Web Extension Wallet!
+						</div>
+						<ul class="list">
+							<li>If you want play the game, please install Nebulas Web Extension Wallet.</li>
+							<li>You can find it here: <a href="https://github.com/ChengOrangeJu/WebExtensionWallet">Nebulas Web Extension Wallet</a></li>
+						</ul>
+					</div>
 					<div id="rules-message" class="ui info message">
 						<i class="close icon"></i>
 						<div class="header">
@@ -43,9 +54,6 @@
 							<li>Each city can be sent only once</li>
 							<li>Please dont cheating, send only really existed city :)</li>
 						</ul>
-					</div>
-					<div id="input-segment" class="ui text segment">
-						<div class=select-wallet-file></div>
 					</div>
 					<div id="cardsList" class="ui five stackable doubling centered cards">
 					</div>

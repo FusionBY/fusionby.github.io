@@ -1,28 +1,23 @@
 import createTileCard from '../Views/createItem';
 
 const nebulasService = function (mediator) {
-	const contract_address = 'n1i8P4uhhgmHQmagmFRsk9cRzfJSkfnv2cp';
-	let user_account = null;
 
-	const is_mainnet = true;
-	let nebulas_chain_id;
-	let nebulas_domain;
-	const gas_price = 20000003;
-	const gas_limit = 2000000;
-
-	if (is_mainnet) {
-		nebulas_chain_id = 1;
-		nebulas_domain = 'https://mainnet.nebulas.io';
-	} else {
-		nebulas_chain_id = 1001;
-		nebulas_domain = 'https://testnet.nebulas.io';
+	if (window.webExtensionWallet === 'for nebulas') {
+		$('#user-token').text('WebExtensionWallet was found.');
+		$('#input-segment').addClass('hide');
+		$('#not-extension-message').addClass('hide');
+		$('#add-button').removeAttr('data-tooltip');
+		mediator.pub('onAuth');
 	}
+
+	const contract_address = 'n1uBwGx1YHuy9acDwVcxd2Evu6hm2LNaGmA'; // to
+	const nebulas_domain = 'https://mainnet.nebulas.io';
+
+	const NebPay = window.require('nebpay');
+	const nebPay = new NebPay;
 	const nebulas = window.require('nebulas');
 	const neb = new nebulas.Neb();
 	neb.setRequest(new nebulas.HttpRequest(nebulas_domain));
-	window.uiBlock.insert({
-		selectWalletFile: ['.select-wallet-file', onUnlockFile],
-	});
 
 	function fetchLastCities () {
 		neb.api
@@ -31,8 +26,8 @@ const nebulasService = function (mediator) {
 				to: contract_address,
 				value: 0,
 				nonce: 0,
-				gasPrice: gas_price,
-				gasLimit: gas_limit,
+				gasPrice: 10,
+				gasLimit: 10,
 				contract: { function: 'getLastCities' },
 			})
 			.then((resp) => {
@@ -48,74 +43,39 @@ const nebulasService = function (mediator) {
 				}
 			});
 	}
-	fetchLastCities(); // call first last
-	setInterval(fetchLastCities, 15000);
+	fetchLastCities();
+	setInterval(() => {
+		fetchLastCities();
+	}, 10000);
 
 	function onClickPostMessage () {
-		// Every transaction has a sequential ID, called 'Nonce'.  Required to sign a message (but not for reading information)
-		neb.api.getAccountState(user_account.getAddressString()).then((resp) => {
-			var nonce = parseInt(resp.nonce) + 1;
 
-			neb.api
-				.call({
-					from: contract_address,
-					to: contract_address,
-					value: 0,
-					nonce: nonce,
-					gasPrice: gas_price,
-					gasLimit: gas_limit,
-					contract: { function: 'postCity', args: JSON.stringify([$('#cityInput').val()]) },
-				})
-				.then((res) => {
-					var result = JSON.parse(res.result);
-					alert(result.message);
-					if (result.result !== 200) {
-						return;
-					} else {
-						var gTx = new nebulas.Transaction(
-							nebulas_chain_id,
-							user_account,
-							contract_address,
-							0,
-							nonce,
-							gas_price,
-							gas_limit,
-							{ function: 'postCity', args: JSON.stringify([$('#cityInput').val()]) }
-						);
+		const serialNumber = nebPay.call(contract_address, 0, 'postCity', JSON.stringify([$('#cityInput').val()]), (cb) => console.log(cb));
 
-						gTx.signTransaction();
-						neb.api.sendRawTransaction(gTx.toProtoString()).then((res) => {
-							function checkHash () {
-								neb.api
-									.getTransactionReceipt(res.txhash)
-									.then((res) => {
-										if (res.status === 1) {
-											fetchLastCities();
-											clearInterval(refreshStatus);
-										}
-									})
-									.catch(() => clearInterval(refreshStatus));
-							}
-							var refreshStatus = setInterval(checkHash, 5000);
-						});
+		function funcIntervalQuery () {
+			nebPay
+				.queryPayInfo(serialNumber) //search transaction result from server (result upload to server by app)
+				.then((resp) => {
+					var respObject = JSON.parse(resp);
+					if (respObject.code === 0) {
+						//The transaction is successful
+						alert('The transaction is successful');
+						clearInterval(intervalQuery); //stop the periodically query
 					}
+				})
+				.catch((err) => {
+					console.log(err);
 				});
-		});
+		}
+
+		const intervalQuery = setInterval(() => {
+			funcIntervalQuery();
+		}, 10000);
 	}
 
 	document.getElementById('pushCityButton').addEventListener('click', () => {
 		onClickPostMessage();
 	});
-
-	function onUnlockFile (swf, fileJson, account, password) {
-		account.fromKey(fileJson, password);
-		user_account = account;
-
-		$('#user-token').text(`Hello, ${fileJson.address}`);
-		$('#input-segment').addClass('hide');
-		$('#add-button').removeAttr('data-tooltip');
-		mediator.pub('onAuth');
-	}
 };
 
 export default nebulasService;
