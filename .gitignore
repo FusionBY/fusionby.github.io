@@ -1,5 +1,6 @@
 node_modules/
 semantic/
+contract.js
 npm-debug.log.*
 .DS_Store
 .DS_Store?

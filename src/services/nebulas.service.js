@@ -1,7 +1,6 @@
 import createTileCard from '../Views/createItem';
 
 const nebulasService = function (mediator) {
-
 	if (window.webExtensionWallet === 'for nebulas') {
 		$('#user-token').text('WebExtensionWallet was found.');
 		$('#input-segment').addClass('hide');
@@ -10,11 +9,11 @@ const nebulasService = function (mediator) {
 		mediator.pub('onAuth');
 	}
 
-	const contract_address = 'n1uBwGx1YHuy9acDwVcxd2Evu6hm2LNaGmA'; // to
+	const contract_address = 'n211npMWbkCt7q58UA1AQFvRTK8scXM7Usv';
 	const nebulas_domain = 'https://mainnet.nebulas.io';
 
 	const NebPay = window.require('nebpay');
-	const nebPay = new NebPay;
+	const nebPay = new NebPay();
 	const nebulas = window.require('nebulas');
 	const neb = new nebulas.Neb();
 	neb.setRequest(new nebulas.HttpRequest(nebulas_domain));
@@ -49,8 +48,13 @@ const nebulasService = function (mediator) {
 	}, 10000);
 
 	function onClickPostMessage () {
-
-		const serialNumber = nebPay.call(contract_address, 0, 'postCity', JSON.stringify([$('#cityInput').val()]), (cb) => console.log(cb));
+		const serialNumber = nebPay.call(
+			contract_address,
+			0,
+			'postCity',
+			JSON.stringify([$('#cityInput').val()]),
+			(cb) => console.log(cb)
+		);
 
 		function funcIntervalQuery () {
 			nebPay
